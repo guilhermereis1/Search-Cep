@@ -16,19 +16,18 @@ function App() {
     } // eslint-disable-next-line
   }, [cep]);
 
+  // eslint-disable-next-line
   async function getCep(cep) {
-    await api
-      .get(`${cep}/json/`)
-      .then((res) => {
-        const response = res.data;
-        setDataCep(response);
-        setLoader(!loader);
-        setError(false);
-      })
-      .catch((res) => {
-        console.log(res);
-        setError(true);
-      });
+    // eslint-disable-next-line
+    try {
+      const response = await api.get(`${cep}/json/`);
+      setDataCep(response.data);
+      setLoader(!loader);
+      setError(false);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
   }
 
   function clearFields() {
@@ -54,8 +53,6 @@ function App() {
               </FormGroup>
             </Col>
           </Row>
-
-          {console.log(error)}
 
           {error ? (
             <p>Cep inválido, digite um cep válido!</p>

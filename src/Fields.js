@@ -89,7 +89,11 @@ const Fields = (props) => {
           </Row>
           <p>
             URL via cep:{" "}
-            <a href={`https://viacep.com.br/ws/${dataCep.cep}/json/`}>
+            <a
+              href={`https://viacep.com.br/ws/${dataCep.cep}/json/`}
+              // eslint-disable-next-line
+              target="_blank"
+            >
               https://viacep.com.br/ws/{dataCep.cep}/json/
             </a>
           </p>
