@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import api from "./Services/api";
-import { Col, Row, Button, FormGroup, Label, Input, Spinner } from "reactstrap";
+import { Col, Row, Button, FormGroup, Input, Spinner } from "reactstrap";
 import Fields from "./Fields";
 
 function App() {
   const [cep, setCep] = useState("");
   const [dataCep, setDataCep] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    getCep(cep); // eslint-disable-next-line
+    if (cep !== "") {
+      getCep(cep);
+    } // eslint-disable-next-line
   }, [cep]);
 
-  function getCep(cep) {
-    api
+  async function getCep(cep) {
+    await api
       .get(`${cep}/json/`)
       .then((res) => {
         const response = res.data;
         setDataCep(response);
         setLoader(!loader);
+        setError(false);
       })
       .catch((res) => {
         console.log(res);
+        setError(true);
       });
   }
 
@@ -40,9 +45,8 @@ function App() {
           <Row>
             <Col md={12}>
               <FormGroup>
-                <Label for="exampleEmail">Insira o CEP</Label>
                 <Input
-                  type="text"
+                  type="number"
                   value={cep}
                   onChange={(e) => setCep(e.target.value)}
                   placeholder="Apenas números!"
@@ -50,19 +54,28 @@ function App() {
               </FormGroup>
             </Col>
           </Row>
-          <div className="text-center">
-            {cep !== "" && !loader && (
-              <Spinner
-                color="secondary"
-                style={{ width: "3rem", height: "3rem" }}
-              />
-            )}
-          </div>
-          <Fields dataCep={dataCep} />
-          {dataCep.length !== 0 && (
-            <Button color="primary" onClick={() => clearFields()}>
-              Limpar Campos
-            </Button>
+
+          {console.log(error)}
+
+          {error ? (
+            <p>Cep inválido, digite um cep válido!</p>
+          ) : (
+            <span>
+              <div className="text-center">
+                {cep !== "" && !loader && (
+                  <Spinner
+                    color="secondary"
+                    style={{ width: "3rem", height: "3rem" }}
+                  />
+                )}
+              </div>
+              <Fields dataCep={dataCep} />
+              {dataCep.length !== 0 && (
+                <Button color="primary" onClick={() => clearFields()}>
+                  Limpar Campos
+                </Button>
+              )}
+            </span>
           )}
         </div>
       </div>
