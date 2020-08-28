@@ -40,7 +40,8 @@ function App() {
       <br />
       <div className="Cep">
         <div className="formCep">
-          <h2 className="text-center">Buscar CEP</h2>
+          <h1 className="text-center">FastCEP</h1>
+          <p className="text-center">Buscar CEP</p>
           <Row>
             <Col md={12}>
               <FormGroup>
